@@ -4,11 +4,13 @@ import styles from "./Pedido.module.css";
 export default function Pedidos() {
     const [pedidos, setPedidos] = useState([]);
 
+    // Adicionar itens do cardapio ao pedido
     useEffect(() => {
         const handler = (e) => {
             setPedidos((prevPedidos) => [...prevPedidos, e.detail]);
         };
 
+        // Adicionar o evento ao window para capturar os itens do cardapio
         window.addEventListener("adicionarPedido", handler);
 
         return () => {

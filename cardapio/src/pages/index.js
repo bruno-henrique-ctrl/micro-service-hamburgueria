@@ -1,6 +1,5 @@
 import Cardapio from "@/components/Cardapio";
 import { Geist, Geist_Mono } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import styles from "../styles/Home.module.css";
 
+// Importação dinâmica
 const Cardapio = dynamic(() => import("cardapio/Cardapio"), { ssr: false });
 const Pedidos = dynamic(() => import("pedido/Pedido"), { ssr: false });
 
