@@ -1,127 +1,40 @@
-# 🧩 Microfrontends com Next.js + Module Federation
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
-> ⚠️ Não usar Next.js > 15, pois o MF não é suportado.
+## Getting Started
 
-Este repositório implementa uma arquitetura de Microfrontends, utilizando:
+First, run the development server:
 
-- Next.js 14
-- React 18
-- Module Federation (nextjs-mf)
-
-Ele contém três aplicações independentes, que se comunicam entre si:
-
-- cd container → Host principal
-- cd cardapio → Remote 1
-- cd pedido → Remote 2
-
----
-
-## 🚀 Como rodar o projeto
-
-> ⚠️ Importante: Para rodar o projeto localmente, é necessário baixar e executar os três microfrontends, pois o Container consome os remotes via localhost.
-
-### 1️. Instale as dependências
-
-- Em cada repositório:
-
-```sh
-npm install
-```
-
-### 2️. Rodando cada microfrontend individualmente
-
-- Em cada repositório:
-
-```sh
+```bash
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🚀 O que cada aplicacao faz?
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-✔ Host principal.
+[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-- Carrega dinamicamente os remotes Cardápio e Pedido.
-- Usa dynamic() + Module Federation.
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
 
-✔ Cardápio
+This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-- Exibe os itens do menu.
-- Envia eventos globais ao adicionar itens ao pedido.
+## Learn More
 
-✔ Pedido
+To learn more about Next.js, take a look at the following resources:
 
-- Escuta eventos enviados pelo Cardápio.
-- Atualiza a lista de pedidos em tempo real.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
 
----
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## 🔗 Comunicação entre Microfrontends
+## Deploy on Vercel
 
-A comunicação é feita via Custom Events do navegador, permitindo comunicação desacoplada entre aplicações separadas.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-- Exemplo no micro Cardápio:
-
-```jsx
-<button
-  type="button"
-  className={styles.botao}
-  onClick={() => {
-    const event = new CustomEvent('adicionarPedido', { detail: item });
-    window.dispatchEvent(event);
-  }}>
-  Adicionar ao pedido
-</button>
-```
-
-- Exemplo no micro Pedido:
-
-```jsx
-useEffect(() => {
-  const handler = (e) => {
-    setPedidos((prevPedidos) => [...prevPedidos, e.detail]);
-  };
-
-  window.addEventListener('adicionarPedido', handler);
-
-  return () => {
-    window.removeEventListener('adicionarPedido', handler);
-  };
-}, []);
-```
-
----
-
-## 🔧 Module Federation
-
-> ⚠️ O mesmo vale para o micro Pedido.
-
-Cardápio expõe componentes assim:
-
-```jsx
-    // cardapio/next.config.js
-    exposes: {
-      './Cardapio': './src/_components/Cardapio.jsx',
-    },
-```
-
-O Container importa dinamicamente:
-
-```jsx
-const Cardapio = dynamic(() => import('cardapio/Cardapio'), { ssr: false });
-```
-
----
-
-## 🎯 Objetivo da arquitetura
-
-- Cada microfrontend pode ser desenvolvido e deployado separadamente.
-- O Container carrega tudo em tempo real como uma aplicacao "normal".
-- Comunicação leve, rápida e desacoplada (se bem configurada).
-
----
-
-## Aplicação local
-
-> O Container consome os remotes via `localhost`. Para melhor usabilidade, o projeto pode ser hospedado em Vercel da vida ou semelhantes.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
